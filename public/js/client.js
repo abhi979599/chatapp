@@ -1,6 +1,6 @@
 const host = window.location.hostname;
 const port = window.location.port;
-const socket = io(`http://${host}:${port}`);
+const socket = io(`https://${host}:${port}`);
 
 const form = document.getElementById("forms");
 const messageInput = document.getElementById("input");
@@ -42,14 +42,14 @@ let name = prompt("Enter Your Name To Join This Chat");
 
 if(!name){
     alert("Please enter your name properly");
-    window.location.href = `http://${host}:${port}/notjoin.html`;
+    window.location.href = `https://${host}:${port}/notjoin.html`;
 }else{
 
 let roomId = prompt("Create your room Id. Someone has already created Room Id, so enter that Room Id and join chat. And when there is no need to create a room Id, then create your own room Id. And give that Id to your friend so that he can join this chat.");
 if (!roomId) {
     alert("Please enter a valid Room ID");
     roomId = "Guest"
-    window.location.href = `http://${host}:${port}/notjoin.html`;
+    window.location.href = `https://${host}:${port}/notjoin.html`;
 }else{
 
 roomContainer.innerText=roomId;
