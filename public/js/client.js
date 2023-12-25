@@ -20,7 +20,7 @@ let callTimerInterval;
 
 const appendMessage = (message, position) => {
     const messageElement = document.createElement("div");
-    const timestamp = new Date().toLocaleTimeString();
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
     
     messageElement.innerHTML = `<div class="main_message">${message}</div><span class="timestamp">${timestamp}</span>`;
     
