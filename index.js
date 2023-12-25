@@ -29,60 +29,109 @@ io.on('connection', (socket) => {
   socket.on('send', (data) => {
     const { message, roomId } = data;
     const user = users[socket.id];
-    if (user && user.roomId === roomId) {
-      socket.broadcast.to(roomId).emit('receive', { message: message, name: user.name });
+    try {
+      if (user && user.roomId === roomId) {
+        socket.broadcast.to(roomId).emit('receive', { message: message, name: user.name });
+      }
+    } catch (error) {
     }
+ 
   });
 
   socket.on('offer', (offer, roomKey) => {
-    const user = users[socket.id];
+
+    try {
+      const user = users[socket.id];
     if(user.name!=null){
       socket.broadcast.to(roomKey).emit('offer', offer,user.name);
 
     }
+    } catch (error) {
+    }
+   
+  });
+
+  socket.on('user-typing', (roomKey) => {
+   
+    try {
+      const user = users[socket.id];
+    if(user.name!=null){
+      socket.broadcast.to(roomKey).emit('user-typinglisten',user.name);
+    }
+
+    } catch (error) {
+    }
+
   });
 
   socket.on('answer', (answer,roomKey) => {
-    // Broadcast the answer to everyone in the room
-    const user = users[socket.id];
+    
+    try {
+      const user = users[socket.id];
     console.log(answer);
     if (user.name !== undefined && user.name !== null) {
       socket.broadcast.to(roomKey).emit('answer', answer, user.name);
+    }
+    
+    } catch (error) {
     }
 
   });
 
   socket.on('end', ( roomKey) => {
-    const user = users[socket.id];
+   
+
+    try {
+      const user = users[socket.id];
     if(user.name!=null){
       socket.broadcast.to(roomKey).emit('end',user.name);
     }
+    
+    } catch (error) {
+    }
+
   });
 
-  socket.on('ice-candidate', (candidate,roomKey) => {
-    // Broadcast the ICE candidate to everyone in the room
-    const user = users[socket.id];
-    console.log(candidate);
-    if (user.name !== undefined && user.name !== null) {
-      socket.broadcast.to(roomKey).emit('ice-candidate', candidate, user.name);
+  socket.on('ice-candidate', (candidate,roomKey) => {    
+
+    try {
+      const user = users[socket.id];
+      console.log(candidate);
+      if (user.name !== undefined && user.name !== null) {
+        socket.broadcast.to(roomKey).emit('ice-candidate', candidate, user.name);
+      }
+    
+    } catch (error) {
     }
+
 
   });
 
   socket.on('reject-call', (roomKey) => {
-    const user = users[socket.id];
-    if (user.name !== undefined && user.name !== null) {
-      socket.broadcast.to(roomKey).emit('reject-call', user.name);
+    
+    try {
+      const user = users[socket.id];
+      if (user.name !== undefined && user.name !== null) {
+        socket.broadcast.to(roomKey).emit('reject-call', user.name);
+      }
+    
+    } catch (error) {
     }
 
   });
   
   socket.on('disconnect', () => {
-    const user = users[socket.id];
-    if (user) {
-      socket.to(user.roomId).emit('left', user.name);
-      delete users[socket.id];
+
+    try {
+      const user = users[socket.id];
+      if (user) {
+        socket.to(user.roomId).emit('left', user.name);
+        delete users[socket.id];
+      }
+    
+    } catch (error) {
     }
+
   });
 });
 

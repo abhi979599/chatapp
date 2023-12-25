@@ -20,7 +20,10 @@ let callTimerInterval;
 
 const appendMessage = (message, position) => {
     const messageElement = document.createElement("div");
-    messageElement.innerText = message;
+    const timestamp = new Date().toLocaleTimeString();
+    
+    messageElement.innerHTML = `<div class="main_message">${message}</div><span class="timestamp">${timestamp}</span>`;
+    
     messageElement.classList.add("message");
     messageElement.classList.add(position);
     messageContainer.append(messageElement);
@@ -80,7 +83,18 @@ socket.on('receive', data => {
 socket.on('left', name => {
     appendMessage(`${name} left the Chat`, 'left');
     messageContainer.scrollTop = messageContainer.scrollHeight;
-});
+});  
+
+function showUserTyping(){
+  const messageInput = document.getElementById("input");
+  let message = messageInput.value.trim(); 
+  const roomKey = localStorage.getItem('roomId');
+
+  if(message!='' && message!=null){
+  socket.emit('user-typing', roomKey);
+  }
+
+}
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -162,6 +176,19 @@ document.getElementById('remoteAudio').srcObject = new MediaStream([event.track]
     localPeerConnection.setRemoteDescription(answer);
     alert(`The call has been accepted by ${user}.`);
     
+  });
+
+  socket.on('user-typinglisten', (user) => {
+
+    const blinking_text = document.getElementById('usertypingbutton');
+    blinking_text.innerText = `${user} is typing`;
+    
+    blinking_text.style.display = 'unset';
+    
+    setTimeout(function() {
+        blinking_text.style.display = 'none';
+    }, 3000);
+
   });
 
   function startTimer(){
