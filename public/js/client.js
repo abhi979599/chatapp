@@ -185,8 +185,12 @@ document.getElementById('remoteAudio').srcObject = new MediaStream([event.track]
     
     blinking_text.style.display = 'unset';
     
-    setTimeout(function() {
-        blinking_text.style.display = 'none';
+    if (blinking_text.timeoutId) {
+      clearTimeout(blinking_text.timeoutId);
+    }
+    
+    blinking_text.timeoutId = setTimeout(function() {
+      blinking_text.style.display = 'none';
     }, 3000);
 
   });
