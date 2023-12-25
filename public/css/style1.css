@@ -1,0 +1,220 @@
+body{
+    background:linear-gradient(blueviolet, pink);
+}
+.chat{
+    margin: 20px 100px ;
+    text-transform: capitalize;
+}
+.contain{
+    background:linear-gradient(red, yellow);
+    height: 70vh;
+    overflow-y: auto;
+    margin: auto;
+    border: 3px solid black;
+}
+.logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+.logo a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 10px;
+    background-color: greenyellow;
+    border: 3px solid black;
+    text-decoration: none;
+    color: black;
+    margin: 20px;
+}
+.h1 {
+    font-size: xx-large;
+    font-weight: bolder;
+}
+input[type="text"]{
+    width: 100%;
+    height: 20px;
+    padding: 5px;
+    font-size: large;
+    font-weight: bolder;
+    margin: 20px 20px 0 0;
+    border: 3px solid black;
+    text-transform: capitalize;
+}
+button{
+    font-size: x-large;
+    font-weight: bolder;
+    margin: 20px 0 0 0;
+    padding: 1px 15px;
+    border: 3px solid black;
+    background-color: green;
+    color: white;
+}
+button:hover{
+    background-color: greenyellow;
+    color: black;
+}
+form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.send{
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    /* font-weight: bolder; */
+    padding: 5px;
+    float: right;
+    margin: 10px 10px 10px 100px;
+    border-radius: 10px;
+    clear: both;
+    border: 3px solid black;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.left{
+    background-color:aqua;
+    border: 3px solid black;
+    color: black;
+    font-size: 16px;
+    font-weight: bolder;
+    padding: 5px;
+    float: left;
+    margin: 10px 100px 10px 10px;
+    border-radius: 10px;
+    clear: both;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.join{
+    background-color:blue;
+    border: 3px solid black;
+    color: white;
+    font-size: 16px;
+    font-weight: bolder;
+    padding: 5px;
+    float: left;
+    margin: 10px 100px 10px 10px;
+    border-radius: 10px;
+    clear: both;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.receive{
+    background-color: #406c6a;
+    border: 3px solid white;
+    color: white;
+    font-size: 16px;
+    /* font-weight: bolder; */
+    padding: 5px;
+    text-transform: capitalize;
+    float: left;
+    margin: 10px 100px 10px 10px;
+    border-radius: 10px;
+    clear: both;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+@media screen and (max-width:800px) {
+    .chat{
+        margin: 10px;
+    }
+    input{
+        padding: 10px;
+    }
+    button{
+        padding: 5px 20px;
+    }
+}
+@media screen and (max-width:800px){
+    .send{
+        margin: 10px 10px 10px 30px;
+    }
+    .receive{
+        margin: 10px 30px 10px 10px;
+    }
+    .left{
+        margin: 10px 30px 10px 10px;
+    }
+    .join{
+        margin: 10px 30px 10px 10px;
+    }
+}
+@media screen and (max-width:355px){
+    .send{
+        margin: 10px 10px 10px 10px;
+        width: 70%;
+    }
+    .receive{
+        margin: 10px 10px 10px 10px;
+        width: 70%;
+    }
+    .left{
+        margin: 10px 10px 10px 10px;
+        width: 70%;
+    }
+    .join{
+        margin: 10px 10px 10px 10px;
+        width: 70%;
+    }
+}
+
+.timestamp{
+    float: right !important;
+    bottom: 0 !important;
+    margin-top: 10px !important;
+    font-size: 13px !important;
+    color: #ffa3a3 !important;
+}
+
+#usertypingbutton{
+    transition: 1.5s;
+    text-align:center;
+   color:#fff;
+   font-size:18px !important;
+   text-transform: none;
+}
+.attachment-button {
+  display: flex;
+  align-items: center;
+  flex-direction: column; /* Align items vertically */
+  margin-top: 10px;
+}
+
+#fileInput {
+  display: none;
+}
+
+label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 4px;
+  margin-bottom: 8px; /* Add margin to separate the file name */
+}
+
+.icon {
+  font-size: 20px;
+  margin-right: 8px;
+}
+
+.text {
+  font-size: 14px;
+}
+
+.file-name {
+  color: #333;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* Style the label when hovering over it */
+label:hover {
+  background-color: #45a049;
+}

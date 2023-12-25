@@ -18,11 +18,13 @@ let isCalling = false;
 let callStartTime;
 let callTimerInterval;
 
-const appendMessage = (message, position) => {
+const appendMessage = (message, position,name) => {
     const messageElement = document.createElement("div");
     const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
     
-    messageElement.innerHTML = `<div class="main_message">${message}</div><span class="timestamp">${timestamp}</span>`;
+    const senderName = name ? `<span class="sender-name">${name}: </span>` : '';
+
+    messageElement.innerHTML = `<div class="main_message">${senderName}${message}</div><span class="timestamp">${timestamp}</span>`;
     
     messageElement.classList.add("message");
     messageElement.classList.add(position);
@@ -39,6 +41,55 @@ const appendMessage = (message, position) => {
     if (position === "join") {
         join.play()
     }
+}
+
+const appendWelcomeMessage = (message, position) => {
+  const messageElement = document.createElement("div");
+  const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+  
+  messageElement.innerHTML = `<div class="main_message">${message}</div><span class="timestamp">${timestamp}</span>`;
+  
+  messageElement.classList.add("message");
+  messageElement.classList.add(position);
+  messageContainer.append(messageElement);
+  if (position === "send") {
+      send.play()
+  }
+  if (position === "receive") {
+      receive.play()
+  }
+  if (position === "left") {
+      left.play()
+  }
+  if (position === "join") {
+      join.play()
+  }
+}
+
+const appendImage = (url, position) => {
+  const messageElement = document.createElement("div");
+  const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+  
+  messageElement.innerHTML = `<div class="main_message"><img src="${url}" style="width:100px;height:100px"></div><span class="timestamp">${timestamp}</span>`;
+  
+  messageElement.classList.add("message");
+  messageElement.classList.add(position);
+  messageContainer.append(messageElement);
+  if (position === "send") {
+      send.play()
+  }
+  if (position === "receive") {
+      receive.play()
+  }
+  if (position === "left") {
+      left.play()
+  }
+  if (position === "join") {
+      join.play()
+  }
+
+  messageContainer.scrollTop = messageContainer.scrollHeight;
+
 }
 
 let name = prompt("Enter Your Name To Join This Chat");
@@ -64,24 +115,65 @@ socket.emit('join-room', roomId, name);
 
 }
 
+function displayFileName(input){
+
+  const fileInput = document.getElementById('fileInput');
+  const fileNameElement = document.getElementById('fileName');
+  const label = document.querySelector('.attachment-button label .text');
+
+  if (fileInput.files.length > 0) {
+    const fileName = fileInput.files[0].name;
+    label.textContent = 'Attached';
+    fileNameElement.textContent = fileName;
+  } else {
+    label.textContent = 'Attach';
+    fileNameElement.textContent = '';
+  }
+
+}
+
+function readImageURL(input) {
+  var url = input.value;
+  var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+  if (input.files && input.files[0]&& (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
+      var reader = new FileReader();
+  
+      reader.onload = function (e) {
+        var images=reader.result;
+          appendImage(e.target.result,'send');
+          const roomKey = localStorage.getItem('roomId');
+          socket.emit('send-image',images,roomKey);
+      }
+      reader.readAsDataURL(input.files[0]);
+
+  }
+  else{
+    alert('You can only send images') ; 
+  }
+}
 
 socket.on('user-joined', name => {
-    appendMessage(`${name} joined the Chat`, 'join');
+  appendWelcomeMessage(`${name} joined the Chat`, 'join');
     messageContainer.scrollTop = messageContainer.scrollHeight;
 });
 
 socket.on('welcome', welcomeMessage => {
-    appendMessage(welcomeMessage, 'receive');
+  appendWelcomeMessage(welcomeMessage, 'receive');
     messageContainer.scrollTop = messageContainer.scrollHeight;
 });
 
 socket.on('receive', data => {
-    appendMessage(`${data.name} : ${data.message}`, 'receive');
+    appendMessage(`${data.message}`, 'receive',`${data.name}`);
     messageContainer.scrollTop = messageContainer.scrollHeight;
 });
 
+socket.on('receive-image', data => {
+  appendImage(`${data.message}`, 'receive');
+  messageContainer.scrollTop = messageContainer.scrollHeight;
+});
+
 socket.on('left', name => {
-    appendMessage(`${name} left the Chat`, 'left');
+  appendWelcomeMessage(`${name} left the Chat`, 'left');
     messageContainer.scrollTop = messageContainer.scrollHeight;
 });  
 
@@ -100,11 +192,23 @@ form.addEventListener('submit', (e) => {
     e.preventDefault();
     let message = messageInput.value.trim(); 
     
-    if (!message) {
+    var input = document.getElementById('fileInput');
+
+  if (input.files && input.files[0]) {
+
+    readImageURL(input);
+
+    input.value = '';
+    const fileNameElement = document.getElementById('fileName');
+    fileNameElement.textContent = '';
+    const label = document.querySelector('.attachment-button label .text');
+    label.textContent = 'Attach';
+
+  }else if (!message) {
         alert("Please Enter Message");
         message = "Hello";
     } else {
-        appendMessage(`You : ${message}`, 'send');
+        appendMessage(`${message}`, 'send','');
         const roomKey = localStorage.getItem('roomId');
         socket.emit('send', { message: message, roomId: roomKey });
         messageInput.value = "";

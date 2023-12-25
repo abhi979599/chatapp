@@ -38,6 +38,17 @@ io.on('connection', (socket) => {
  
   });
 
+  socket.on('send-image', (image,roomId) => {
+    const user = users[socket.id];
+    try {
+      if (user && user.roomId === roomId) {
+        socket.broadcast.to(roomId).emit('receive-image', { message: image, name: user.name });
+      }
+    } catch (error) {
+    }
+ 
+  });
+
   socket.on('offer', (offer, roomKey) => {
 
     try {
